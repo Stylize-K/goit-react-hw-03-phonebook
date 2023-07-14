@@ -5,8 +5,11 @@ import { FcPhone } from 'react-icons/fc';
 export const ContactListItem = ({ contact, onDeleteContact }) => {
   return (
     <li className={css.list_item} key={contact.id}>
-      <FcPhone size={'1.5em'} />
-      {contact.name}: {contact.number}
+      <div className="contact_wrp">
+        <FcPhone size={'1.5em'} />
+        {contact.name}: {contact.number}
+      </div>
+
       <button
         className={css.button_delete}
         type="button"
