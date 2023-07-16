@@ -65,6 +65,7 @@ export class App extends Component {
     this.setState({ filter: '' });
   };
 
+  // Якщо користувач заходить перший раз - початковий список контактів береться зі State. Якщо в localStorage зберігається список контактів користувача - то записати їх у State.
   componentDidMount() {
     const contacts = localStorage.getItem('contacts');
     const parsedContacts = JSON.parse(contacts);
@@ -73,6 +74,7 @@ export class App extends Component {
     }
   }
 
+  // Якщо користувач оновив список контактів - записати зміни в localStorage.
   componentDidUpdate(prevProps, prevState) {
     if (this.state.contacts !== prevState.contacts) {
       localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
