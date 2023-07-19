@@ -5,9 +5,9 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { object, string } from 'yup';
 
 //Регулярні вирази для валідації відповідних полів форми
-const regexName = "^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$";
-// const regexNumber =
-//   '+?d{1,4}?[ .-s]?(?d{1,3}?)?[ .-s]?d{1,4}[ .-s]?d{1,4}[ .-s]?d{1,9}';
+const regexName = /^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/;
+const regexNumber =
+  /\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/;
 
 //Схема для валідації полів форми
 const schema = object({
@@ -18,7 +18,7 @@ const schema = object({
     .trim()
     .required('Required'),
   number: string()
-    // .matches(regexNumber, 'Not valid')
+    .matches(regexNumber, 'Phone is not valid')
     .min(5, 'Number too short')
     .max(15, 'Number too long')
     .trim()
