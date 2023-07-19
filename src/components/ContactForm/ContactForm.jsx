@@ -12,17 +12,17 @@ const regexNumber =
 //Схема для валідації полів форми
 const schema = object({
   name: string()
-    .matches(regexName, 'Not valid')
+    .matches(regexName, 'Name is not valid')
     .min(2, 'Name too short')
     .max(15, 'Name too short')
     .trim()
-    .required('Required'),
+    .required('Name is required'),
   number: string()
-    .matches(regexNumber, 'Phone is not valid')
-    .min(5, 'Number too short')
-    .max(15, 'Number too long')
+    .matches(regexNumber, 'Phone number is not valid')
+    .min(5, 'Phone number too short')
+    .max(15, 'Phone number too long')
     .trim()
-    .required('Required'),
+    .required('Phone number is required'),
 });
 
 export const ContactForm = ({ onSubmit }) => {
