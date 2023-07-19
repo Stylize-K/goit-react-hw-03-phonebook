@@ -20,22 +20,21 @@ export class App extends Component {
     filter: '',
   };
 
-  //Метод обробки сабміту форми - додаємо дані в state (дані отримуємо з компонента ContactForm)
-  formSubmitHandler = data => {
-    const { contacts } = this.state;
-    console.log(data);
-    //Заборона додавати контакти, імена яких вже присутні у телефонній книзі.
-    if (contacts.some(contact => contact.name === data.name)) {
-      alert(`${data.name} is already in contacts.`);
-      return;
+  // Якщо користувач заходить перший раз - початковий список контактів береться зі State. Якщо в localStorage зберігається список контактів користувача - то записати їх у State.
+  componentDidMount() {
+    const contacts = localStorage.getItem('contacts');
+    const parsedContacts = JSON.parse(contacts);
+    if (parsedContacts) {
+      this.setState({ contacts: parsedContacts });
     }
-    this.setState({
-      contacts: [
-        ...contacts,
-        { id: this.generetedId(), name: data.name, number: data.number },
-      ],
-    });
-  };
+  }
+
+  // Якщо користувач оновив список контактів - записати зміни в localStorage.
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
 
   //Метод генерації id. Функція nanoid()  приймає необов'язковий аргумент, що задає довжину id
   generetedId = () => {
@@ -65,31 +64,33 @@ export class App extends Component {
     this.setState({ filter: '' });
   };
 
-  // Якщо користувач заходить перший раз - початковий список контактів береться зі State. Якщо в localStorage зберігається список контактів користувача - то записати їх у State.
-  componentDidMount() {
-    const contacts = localStorage.getItem('contacts');
-    const parsedContacts = JSON.parse(contacts);
-    if (parsedContacts) {
-      this.setState({ contacts: parsedContacts });
+  //Метод обробки сабміту форми - додаємо дані в state (дані отримуємо з компонента ContactForm)
+  formSubmitHandler = data => {
+    const { contacts } = this.state;
+    console.log(data);
+    //Заборона додавати контакти, імена яких вже присутні у телефонній книзі.
+    if (contacts.some(contact => contact.name === data.name)) {
+      alert(`${data.name} is already in contacts.`);
+      return;
     }
-  }
-
-  // Якщо користувач оновив список контактів - записати зміни в localStorage.
-  componentDidUpdate(prevProps, prevState) {
-    if (this.state.contacts !== prevState.contacts) {
-      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
-    }
-  }
+    this.setState({
+      contacts: [
+        ...contacts,
+        { id: this.generetedId(), name: data.name, number: data.number },
+      ],
+    });
+  };
 
   render() {
     const filteredContacts = this.getFilteredContacts();
     return (
       <div
         style={{
+          padding: '20px 0 0 0',
           height: '100vh',
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
           alignItems: 'center',
           color: '#010101',
         }}
